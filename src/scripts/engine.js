@@ -7,9 +7,20 @@ const state ={
     },
     values:{
         timerId: null,
+        countDownId: setInterval(countDown, 1000),
         gameVelocity: 700,
         hitPosition: 0,
         result: 0,
+        currentTime: 60,
+    }
+}
+
+function countDown(){
+    state.values.currentTime --;
+    state.view.timeLeft.textContent = state.values.currentTime;
+
+    if(state.values.currentTime <=0 ){
+        alert("Fim de Jogo! Seu resultado foi: " + state.values.result);
     }
 }
 
@@ -46,6 +57,8 @@ function addListenerHitBox(){
 function initialize() {
     moveEnemy();
     addListenerHitBox();
+    countDown();
 }
 
 initialize();
+
