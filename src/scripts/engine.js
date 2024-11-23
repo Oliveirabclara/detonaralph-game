@@ -7,12 +7,15 @@ const state ={
     },
     values:{
         timerId: null,
-        countDownId: setInterval(countDown, 1000),
         gameVelocity: 700,
         hitPosition: 0,
         result: 0,
-        currentTime: 60,
+        currentTime: 30,
+    },
+    actions:{
+        countDownId: setInterval(countDown, 1000),
     }
+
 }
 
 function countDown(){
@@ -20,7 +23,8 @@ function countDown(){
     state.view.timeLeft.textContent = state.values.currentTime;
 
     if(state.values.currentTime <=0 ){
-        alert("Fim de Jogo! Seu resultado foi: " + state.values.result);
+        alert("Fim de Jogo! Seu resultado foi: " + state.values.result),
+        state.values.currentTime = 30;
     }
 }
 
@@ -41,6 +45,14 @@ function moveEnemy(){
     state.values.timerId = setInterval(randomSquare, state.values.gameVelocity);
 }
 
+
+function playSound(){
+    let audio = new Audio("./src/audios/hit.m4a");
+    audio.volume = 0.1;
+    audio.play();
+
+}
+
 function addListenerHitBox(){
     state.view.squares.forEach((square)=> {
         square.addEventListener("mousedown", ()=>{
@@ -48,12 +60,15 @@ function addListenerHitBox(){
                 state.values.result++
                 state.view.score.textContent = state.values.result;
                 state.values.hitPosition = null;
+                playSound();
 
             };
         })
     });
 
 }
+
+
 function initialize() {
     moveEnemy();
     addListenerHitBox();
